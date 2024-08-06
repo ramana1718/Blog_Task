@@ -1,0 +1,52 @@
+
+
+<template>
+    <div class="text-teal-600">
+        </div>
+    <div  class="ml-36 mr-48 border shadow-sm mb-4 p-5 rounded" v-for="(row,index) in data" :key="index">
+      <h2 class="mt-4 font-bold text-3xl"> {{ row.title }}</h2>
+      <h2 class="font-bold">(Category: {{ row.category }})</h2>
+     <br> <h2 class="font-bold">CONTENT: </h2>
+      <h2><h2>
+        <br>
+      </h2 class="mb-4">{{ row.content }}</h2>
+
+      <div class="flex justify-end gap-6 text-white">
+        <button @click="showEditComponent(row.blogid)" class="bg-teal-500 p-2 rounded">Edit</button>
+        <button @click="deleteblogs(row.blogid)" class="bg-teal-500 p-2 rounded">Delete</button></div>
+    </div>
+    
+      <EditComponent v-if="showEditModal"  @cancelEdit="cancelEdit" @updateEdit="updateEdit(row.blogid)"/>
+
+    
+  
+  </template>
+  <script setup>
+  import EditComponent from '@/components/EditComponent.vue';
+  import { BlogDetailsStore } from '@/stores/Blog';
+  import { UserDetailsStore } from '@/stores/user';
+  import { ref } from 'vue';
+  const showEditModal=ref(false);
+  const userstore=UserDetailsStore();
+  const userid=ref(0);
+  userid.value =userstore.ourId;
+  const store=BlogDetailsStore();
+  store.getourBlogs(userstore.ourId);
+  const data=ref([])
+  data.value=store.ourBlogs;
+  console.log(data.value)
+  const deleteblogs=async(blogid)=>{
+    store.deleteblog(blogid);
+
+  }
+  const showEditComponent=(blogid)=>{
+    showEditModal.value=true;
+  }
+ const cancelEdit=()=>{
+  showEditModal.value=false;
+ }
+ const updateEdit=(blogid)=>{
+
+ }
+
+  </script>
