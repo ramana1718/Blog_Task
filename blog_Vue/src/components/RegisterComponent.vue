@@ -18,7 +18,8 @@
   </div>
   <span v-if="InvalidDetails" class="text-red-500 text-sm">{{ InvalidDetails }}</span>
    <div class=" flex justify-center mt-4  bg-teal-500 p-3">
-    <button class="">REGISTER</button>
+    <button class="">REGISTER</button></div><div class="flex justify-center">
+    <span v-if="bRegisterError" class="text-red-500 text-sm">{{ bRegisterError }}</span>
     
    </div> 
    <div class="">
@@ -40,6 +41,7 @@ const cpassword=ref("")
 const cpassError=ref("")
 const store=UserDetailsStore();
 const InvalidDetails=ref("");
+const bRegisterError=ref("")
 const cpassCheck=(password,cpassword)=>{
 if(password!==cpassword){
   cpassError.value="Password does not match"
@@ -50,15 +52,19 @@ else{
 }
 const isCorrect=()=>{
     console.log("correct")
-return ( !errors.value.password && !cpassError.value)
+return ( !errors.value.email && !errors.value.password && !cpassError.value)
 }
 const emit= defineEmits(['registerUser'])
 const registerUser=async()=>{
  if(isCorrect()){
- store.register(email.value,password.value,userName.value)
+await store.register(email.value,password.value,userName.value)
+ bRegisterError.value=store.bRegisterError;
+ console.log(bRegisterError.value)
+ InvalidDetails.value=""
 }
 else{
   InvalidDetails.value="provide valid details"
+  bRegisterError.value=""
 }
 }
 

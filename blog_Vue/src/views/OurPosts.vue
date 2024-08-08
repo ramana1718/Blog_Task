@@ -9,44 +9,60 @@
      <br> <h2 class="font-bold">CONTENT: </h2>
       <h2><h2>
         <br>
+        <EditComponent v-if="showEditModal" :blogid="cblogid" :title="ctitle" :category="ccategory" :content="ccontent"  @cancelEdit="cancelEdit" @updateEdit="updateEdit()"/>
+
       </h2 class="mb-4">{{ row.content }}</h2>
 
       <div class="flex justify-end gap-6 text-white">
-        <button @click="showEditComponent(row.blogid)" class="bg-teal-500 p-2 rounded">Edit</button>
+        <button @click="showEditComponent(row)"  class="bg-teal-500 p-2 rounded">Edit</button>
         <button @click="deleteblogs(row.blogid)" class="bg-teal-500 p-2 rounded">Delete</button></div>
-    </div>
     
-      <EditComponent v-if="showEditModal"  @cancelEdit="cancelEdit" @updateEdit="updateEdit(row.blogid)"/>
-
+    
+    </div>
     
   
   </template>
   <script setup>
   import EditComponent from '@/components/EditComponent.vue';
   import { BlogDetailsStore } from '@/stores/Blog';
-  import { UserDetailsStore } from '@/stores/user';
-  import { ref } from 'vue';
+  // import { UserDetailsStore } from '@/stores/user';
+  import { onMounted, ref } from 'vue';
   const showEditModal=ref(false);
-  const userstore=UserDetailsStore();
+  // const userstore=UserDetailsStore();
   const userid=ref(0);
-  userid.value =userstore.ourId;
+  userid.value =localStorage.getItem('userid')
   const store=BlogDetailsStore();
-  store.getourBlogs(userstore.ourId);
+let  cblogid=ref(0);
+const ctitle=ref("")
+const ccategory=ref("")
+const ccontent=ref("")
+
   const data=ref([])
-  data.value=store.ourBlogs;
+  onMounted(async()=>{
+    await store.getourBlogs(userid.value);
+    data.value=store.ourBlogs;
+  })
+
   console.log(data.value)
   const deleteblogs=async(blogid)=>{
-    store.deleteblog(blogid);
+    await store.deleteblog(blogid);
 
   }
-  const showEditComponent=(blogid)=>{
+  const showEditComponent=(row)=>{
     showEditModal.value=true;
+    console.log(row.blogid)
+    cblogid.value=row.blogid;
+    ctitle.value=row.title;
+    ccontent.value=row.content;
+    ccategory.value=row.category;
+    console.log(cblogid.value,ctitle.value,ccategory.value,ccontent.value)
+
   }
  const cancelEdit=()=>{
   showEditModal.value=false;
  }
- const updateEdit=(blogid)=>{
-
+ const updateEdit=()=>{
+showEditModal.value=false;
  }
 
   </script>

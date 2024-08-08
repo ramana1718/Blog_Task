@@ -4,6 +4,7 @@
 <h1 class="text-4xl flex justify-end bg-teal-600 p-4">BLOG PLATFORM</h1>
 
      <div class="flex justify-end gap-28 text-xl p-3 bg-teal-500">
+      
        <h3><RouterLink to="/">All</RouterLink></h3> 
         <h3><RouterLink to="/OurPosts">Our Posts</RouterLink></h3>
         <h3><RouterLink to="/form">Add Blog</RouterLink></h3>

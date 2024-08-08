@@ -32,4 +32,6 @@ Route.group(()=>{
     Route.post('/CreateBlogs','BlogsController.CreateBlogs')
     Route.delete('/DeleteBlog/:blogid','BlogsController.DeleteBlog')
     Route.patch('/updateBlog/:blogid','BlogsController.UpdateBlog')
+    Route.get('/SearchBlog','BlogsController.searchBlog')
+    Route.get('/findUser/:userid','BlogsController.getUser')
 }).middleware(['auth'])

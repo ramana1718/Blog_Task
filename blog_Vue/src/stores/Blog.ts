@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import api from '@/services/api';
 
@@ -58,6 +58,63 @@ const ourBlogs=ref([])
         console.log(err)
       }
     }
+    const categoryblog=async(category:string)=>{
+      try{
+        const url=`/CategoryBlogs/${category}`
+        const response=await api.get(url,{
+          headers:{Authorization:`Bearer ${token.value}`}
+        })
+        return response.data.data
+      }
+      catch(err){
+        console.log(err)
+      }
+    }
+    const updateBlog=async(blogid:string,title:string,category:string,content:string,)=>{
+      console.log(blogid)
+      try{
+        const url=`/updateBlog/${blogid}`
+        const response=await api.patch(url,{
+          title:title,
+          content:content
+        },{
+          headers:{Authorization:`Bearer ${token.value}`}
+        })
+        return response.data.data
+      }
+      catch(err){
+        console.log(err)
+      }
+    }
+    const searchBlog=async(title:string)=>{
+      try{
+        const response=await api.get('/SearchBlog',
+          {
+            params:{
+              title:title
+            },headers:{Authorization:`Bearer ${token.value}`}},
+      )
+      console.log(response)
+      return response.data.data
+      }
+      catch(err){
+        console.log(err)
+      }
+    }
+    const getUser=async(userid:number)=>{
+      try{
+        const url=`/findUser/${userid}`
+        const response=await api.get(url,{
+          headers:{Authorization:`Bearer ${token.value}`}
+        })
+        console.log(response.data.data.name)
+       let  username=response.data.data.name
+        return username
+      }catch(err){
+        return err
+      }
+    }
+
     
-      return{getBlogs,allBlogs,getourBlogs,ourBlogs,addBlog,deleteblog}
+      return{getBlogs,allBlogs,getourBlogs,ourBlogs,addBlog,deleteblog,categoryblog,updateBlog,searchBlog,getUser}
 })
