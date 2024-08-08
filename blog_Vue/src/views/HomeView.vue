@@ -23,7 +23,7 @@
            <option value="studies">Studies</option>
            <option value="woman">Woman</option>
            <option value="child">Child</option>
-           <option value="employee">Employee</option>
+           <option value="Employee">Employee</option>
            <option value="money">Money</option>
            <option value="stockMarket">Stock Market</option>
          </select>

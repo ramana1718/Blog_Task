@@ -5,16 +5,15 @@
        <div class="mb-4 mt-4">
          <select 
            class="w-full border border-teal-500 rounded p-2" 
-           v-model="category"
-           value="sdsd">
-           <option value="" disabled>Select a category</option>
+           v-model="category" >
+           <option value=""disabled>Select a category</option>
            <option value="sport">Sport</option>
            <option value="politics">Politics</option>
            <option value="world">World</option>
            <option value="studies">Studies</option>
            <option value="woman">Woman</option>
            <option value="child">Child</option>
-           <option value="employee">Employee</option>
+           <option value="Employee">Employee</option>
            <option value="money">Money</option>
            <option value="stockMarket">Stock Market</option>
          </select>
@@ -35,7 +34,7 @@
          ></textarea>
        </div>
      
-  
+
         <div class="flex justify-end space-x-4 mt-4">
           <button @click="$emit('cancelEdit')" class="bg-gray-500 text-white p-2 rounded">Cancel</button>
           <button @click="updateBlog()" class="bg-teal-600 text-white p-2 rounded">Update</button>
@@ -47,21 +46,25 @@
   <script setup>
 import { ref } from 'vue';
 import { BlogDetailsStore } from '@/stores/Blog';
+
 const emit=defineEmits(['cancelEdit','updateEdit'])
 const props=defineProps({blogid:Number ,title:String,category:String,content:String})
 const store=BlogDetailsStore();
 const title=ref("")
-const category=ref("")
+const category= props.category;
 const content=ref("")
 const blogid=ref(0);
-console.log(props.blogid)
+console.log(props)
 blogid.value=props.blogid;
 title.value=props.title;
-category.value=props.category;
+console.log(typeof category);
+const name = category;
+
 content.value=props.content;
 const updateBlog=async()=>{
   console.log(blogid.value,title.value,category.value,content.value)
 await store.updateBlog(blogid.value,title.value,category.value,content.value);
 emit('updateEdit')
 }
+
   </script>

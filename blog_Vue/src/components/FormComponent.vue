@@ -62,5 +62,6 @@ const handleSubmit = () => {
   console.log(userid.value, title.value, content.value, category.value);
   store.addBlog(userid.value, title.value, category.value, content.value);
   router.push('/');
+  window.location.reload()
 };
 </script>

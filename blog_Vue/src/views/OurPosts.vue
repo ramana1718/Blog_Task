@@ -10,12 +10,13 @@
       <h2><h2>
         <br>
         <EditComponent v-if="showEditModal" :blogid="cblogid" :title="ctitle" :category="ccategory" :content="ccontent"  @cancelEdit="cancelEdit" @updateEdit="updateEdit()"/>
+        <DeleteModal v-if="showDeleteModal" @confirm="deleteblog" @cancel="cancelDelete" />
 
       </h2 class="mb-4">{{ row.content }}</h2>
 
       <div class="flex justify-end gap-6 text-white">
         <button @click="showEditComponent(row)"  class="bg-teal-500 p-2 rounded">Edit</button>
-        <button @click="deleteblogs(row.blogid)" class="bg-teal-500 p-2 rounded">Delete</button></div>
+        <button @click="confirmdelete(row.blogid)" class="bg-teal-500 p-2 rounded">Delete</button></div>
     
     
     </div>
@@ -25,9 +26,12 @@
   <script setup>
   import EditComponent from '@/components/EditComponent.vue';
   import { BlogDetailsStore } from '@/stores/Blog';
+  import DeleteModal from '@/components/deletemodal.vue';
   // import { UserDetailsStore } from '@/stores/user';
   import { onMounted, ref } from 'vue';
   const showEditModal=ref(false);
+  const showDeleteModal = ref(false);
+
   // const userstore=UserDetailsStore();
   const userid=ref(0);
   userid.value =localStorage.getItem('userid')
@@ -36,7 +40,7 @@ let  cblogid=ref(0);
 const ctitle=ref("")
 const ccategory=ref("")
 const ccontent=ref("")
-
+const deletblogid=ref(0);
   const data=ref([])
   onMounted(async()=>{
     await store.getourBlogs(userid.value);
@@ -44,9 +48,16 @@ const ccontent=ref("")
   })
 
   console.log(data.value)
-  const deleteblogs=async(blogid)=>{
-    await store.deleteblog(blogid);
+  const confirmdelete=async(blogid)=>{
+    showDeleteModal.value=true;
+    deletblogid.value=blogid;
+    console.log(deletblogid.value)
 
+  }
+  const deleteblog=async()=>{
+    await store.deleteblog(deletblogid.value);
+    showDeleteModal.value=false
+    window.location.reload()
   }
   const showEditComponent=(row)=>{
     showEditModal.value=true;
@@ -63,6 +74,10 @@ const ccontent=ref("")
  }
  const updateEdit=()=>{
 showEditModal.value=false;
+window.location.reload()
  }
-
+ const cancelDelete = () => {
+  showDeleteModal.value = false;
+  deleteblog.value = null;
+};
   </script>
