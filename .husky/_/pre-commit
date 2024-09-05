@@ -4,6 +4,6 @@ then
     npm run prepare
 fi
 
-. "$(dirname -- "$0")/husky.sh"
+
 cd blog_Adonis
 npm run preCommit
