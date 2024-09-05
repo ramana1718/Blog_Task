@@ -18,22 +18,25 @@
 |
 */
 
-import Route from '@ioc:Adonis/Core/Route'
+import Route from "@ioc:Adonis/Core/Route";
 
-Route.post('/login','AuthController.login')
-Route.post('/register','AuthController.register')
-Route.where('userid',Route.matchers.number())
-Route.where('blogid',Route.matchers.number())
-Route.where('page',Route.matchers.number())
+Route.post("/login", "AuthController.login");
+Route.post("/register", "AuthController.register");
+Route.where("userid", Route.matchers.number());
+Route.where("blogid", Route.matchers.number());
+Route.where("page", Route.matchers.number());
 
-Route.group(()=>{
-    Route.get('/viewall','BlogsController.viewBlog')
-    Route.get('/ourBlogs/:userid','BlogsController.OurBlogs')
-    Route.get('/CategoryBlogs/:category','BlogsController.CategoryBlogs').where('category',Route.matchers.slug())
-    Route.post('/CreateBlogs','BlogsController.CreateBlogs')
-    Route.delete('/DeleteBlog/:blogid','BlogsController.DeleteBlog')
-    Route.patch('/updateBlog/:blogid','BlogsController.UpdateBlog')
-    Route.get('/SearchBlog','BlogsController.searchBlog')
-    Route.get('/findUser/:userid','BlogsController.getUser')
-    Route.get('/paginate/:page','BlogsController.Paginate')
-}).middleware(['auth'])
+Route.group(() => {
+  Route.get("/viewall", "BlogsController.viewBlog");
+  Route.get("/ourBlogs/:userid", "BlogsController.OurBlogs");
+  Route.get("/CategoryBlogs/:category", "BlogsController.CategoryBlogs").where(
+    "category",
+    Route.matchers.slug(),
+  );
+  Route.post("/CreateBlogs", "BlogsController.CreateBlogs");
+  Route.delete("/DeleteBlog/:blogid", "BlogsController.DeleteBlog");
+  Route.patch("/updateBlog/:blogid", "BlogsController.UpdateBlog");
+  Route.get("/SearchBlog", "BlogsController.searchBlog");
+  Route.get("/findUser/:userid", "BlogsController.getUser");
+  Route.get("/paginate/:page", "BlogsController.Paginate");
+}).middleware(["auth"]);

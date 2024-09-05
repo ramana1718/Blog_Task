@@ -7,8 +7,10 @@
     "build": "node ace build --production",
     "start": "node server.js",
     "test": "node ace test",
+    "lint": "eslint . --ext=.ts",
+    "format": "prettier --write .",
     "prepare": "cd .. && husky install",
-    "preCommit": "yarn format && sh .husky/GitSync.sh && yarn build"
+    "preCommit": "npm run format && npm run build"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^5.9.6",
@@ -30,6 +32,7 @@
     "cors": "^2.8.5",
     "luxon": "^3.5.0",
     "mysql2": "^3.11.0",
+    "prettier": "^3.3.3",
     "proxy-addr": "^2.0.7",
     "reflect-metadata": "^0.2.2",
     "source-map-support": "^0.5.21"

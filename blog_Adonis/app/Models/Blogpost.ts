@@ -1,34 +1,34 @@
-import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import Bloguser from './User'
+import { DateTime } from "luxon";
+import { BaseModel, BelongsTo, belongsTo, column } from "@ioc:Adonis/Lucid/Orm";
+import Bloguser from "./User";
 export default class Blogpost extends BaseModel {
-  public static table='blogposts'
+  public static table = "blogposts";
   @column({ isPrimary: true })
-  public blogid: number
+  public blogid: number;
 
   @column()
-  public userid : number
+  public userid: number;
 
   @column()
-  public category:string
+  public category: string;
 
   @column()
-  public title:string
+  public title: string;
 
   @column()
-  public content:string
+  public content: string;
 
   @column()
-  public tags:string
+  public tags: string;
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  public createdAt: DateTime;
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  public updatedAt: DateTime;
 
   @belongsTo(() => Bloguser, {
-    foreignKey: 'userid',
+    foreignKey: "userid",
   })
-  public user: BelongsTo<typeof Bloguser>
+  public user: BelongsTo<typeof Bloguser>;
 }
