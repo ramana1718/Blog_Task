@@ -24,6 +24,7 @@ Route.post('/login','AuthController.login')
 Route.post('/register','AuthController.register')
 Route.where('userid',Route.matchers.number())
 Route.where('blogid',Route.matchers.number())
+Route.where('page',Route.matchers.number())
 
 Route.group(()=>{
     Route.get('/viewall','BlogsController.viewBlog')
@@ -34,4 +35,5 @@ Route.group(()=>{
     Route.patch('/updateBlog/:blogid','BlogsController.UpdateBlog')
     Route.get('/SearchBlog','BlogsController.searchBlog')
     Route.get('/findUser/:userid','BlogsController.getUser')
+    Route.get('/paginate/:page','BlogsController.Paginate')
 }).middleware(['auth'])

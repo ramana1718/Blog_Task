@@ -25,6 +25,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { ref, watch } from 'vue';
+import 'vuetify/styles'
+
 const loggedIn=ref(false)
 const localdata = ref(localStorage)
 

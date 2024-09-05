@@ -3,7 +3,10 @@
 <template>
 
   <div class="">
-    
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+</svg> -->
+
     <div class="flex justify-end pr-20 mr-20 w-full mt-4">
       <div class="p-5">
       <input
@@ -35,53 +38,102 @@
    <br> <h2 class="font-bold">CONTENT: </h2>
     <h2><h2>
       <br>
-    </h2 class="text-xl mb-4">{{ row.content }}</h2>
+    </h2 class="text-xl mb-4">{{ row.content }}</h2><br>
     <div>
-      <h3 > BY: {{ findUser(row.userid) }}</h3>
+      <h1 class="text-teal-500">{{ row.tags}}</h1>
     </div>
+    <div class="flex justify-end">
+      <h3 >BLOG BY: {{ row.name}}</h3>
+    </div>
+    
+  </div>
+  <div class="text-center">
+    <v-container>
+      <v-row justify="center">
+        <v-col cols="5">
+          <v-container class="max-width">
+            <v-pagination
+              v-model="page"
+              :length="totalpage"
+              class="my-4"
+              @click="pageData(page)"
+            ></v-pagination>
+          </v-container>
+        </v-col>
+      </v-row>
+    </v-container>
   </div></div>
 
 </template>
 <script setup>
 
 import { BlogDetailsStore } from '@/stores/Blog';
-import { onMounted, ref, watch , computed} from 'vue';
+import { onMounted, ref, watch ,} from 'vue';
 const searchText=ref("")
 const store=BlogDetailsStore();
+const page=ref(1)
 const category=ref("")
-const data=ref("")
-const name=ref("")
-console.log("HI"+category.value)
+const data=ref([])
+const totalpage=ref(1)
+// const paginatefunc=(page)=>{
+//   window.location.reload()
+//   console.log(page)
+// }
 watch(category, async(newv,oldv)=>{
-  
      data.value=await store.categoryblog(newv)
     console.log(data.value)
-  
   console.log(newv)
 })
  
-onMounted(async()=>{
-await store.getBlogs();
-data.value=  store.allBlogs;
-})
-const searchTitle=async()=>{
- console.log(searchText.value)
-//  watch(searchText, async(newv,oldv)=>{
-  console.log(searchText.value);
-  
-      data.value=await store.searchBlog(searchText.value)}
-//  })
- 
-const nameval = async (userid)=>{
-  let Uname=await store.getUser(userid)
-  console.log("name : ", Uname);
-  
-  return Uname;
+const userName=async()=>{
+  data.value = await Promise.all(data.value.map(async(ele)=>{
+  const userName = await store.getUser(ele.userid);
+  const obj = {
+    ...ele,
+    name:userName
+  }
+  return obj
+}))
 }
-const findUser = async (userid) => {
-  let y =  await nameval(userid);
-  console.log(y);
-  return y
-};
+const pageData=async(page)=>{
+  data.value=  await store.paginate(page);
+  await userName();
+}
+onMounted( async()=>{
+await pageData(1);
+ totalpage.value=store.pageCount
+ await userName();
+} 
+
+
+
+
+)
+const searchTitle=async()=>{
+  if(searchText.value!==''){
+    console.log(searchText.value)
+
+console.log(searchText.value);
+
+    data.value=await store.searchBlog(searchText.value)
+  }
+  else{
+    
+    window.location.reload()
+  }
+}
+//  })
+//  watch(searchText, async(newv,oldv)=>{
+// const nameval = async (userid)=>{
+//   let Uname=await store.getUser(userid)
+//   // console.log("name : ", Uname);
+  
+//   return Uname;
+// }
+// const findUser = async (userid) => {
+//   let y =  await nameval(userid);
+//   console.log(await nameval(userid));
+//   return y
+// };
 
 </script>

@@ -1,11 +1,11 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import api from '@/services/api';
-
 export const BlogDetailsStore = defineStore('Blog', () => {
 const token=ref(localStorage.getItem('token'))
 const allBlogs=ref([])
 const ourBlogs=ref([])
+const pageCount=ref(1);
     const getBlogs = async () => {
         try {
           const response = await api.get('/viewall', {
@@ -75,7 +75,7 @@ const ourBlogs=ref([])
       try{
         const url=`/updateBlog/${blogid}`
         const response=await api.patch(url,{
-          title:title,
+          title:title,  
           content:content
         },{
           headers:{Authorization:`Bearer ${token.value}`}
@@ -107,14 +107,27 @@ const ourBlogs=ref([])
         const response=await api.get(url,{
           headers:{Authorization:`Bearer ${token.value}`}
         })
-        console.log(response.data.data.name)
+        // console.log(response.data.data.name)
        let  username=response.data.data.name
         return username
       }catch(err){
         return err
       }
     }
+    const paginate=async(page:Number=1)=>{
+      try{
+        const url=`/paginate/${page}`;
+        const response=await api.get(url,{
+          headers:{Authorization:`Bearer ${token.value}`}
+        })
+        pageCount.value=response.data.data.meta.last_page
+        return response.data.data.data
+      }catch(err){
+        return err
+      }
+
+    }
 
     
-      return{getBlogs,allBlogs,getourBlogs,ourBlogs,addBlog,deleteblog,categoryblog,updateBlog,searchBlog,getUser}
+      return{getBlogs,allBlogs,getourBlogs,ourBlogs,addBlog,deleteblog,categoryblog,updateBlog,searchBlog,getUser,paginate,pageCount}
 })

@@ -10,12 +10,13 @@ export default class extends BaseSchema {
       table.string('category').notNullable()
       table.string('title').notNullable()
       table.text('content').notNullable()
+      table.text('tags')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
   }
 
   public async down () {
-    // this.schema.dropTable(this.tableName)
+    this.schema.dropTable(this.tableName)
   }
 }
