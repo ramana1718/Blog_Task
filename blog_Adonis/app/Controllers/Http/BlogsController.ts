@@ -45,7 +45,9 @@ export default class BlogsController {
         .json({ Message: "an error occured", error: err });
     }
   }
-  public async sample(){}
+  public async sample() {
+    console.log("ldf")
+  }
 
   public async CategoryBlogs({ params, response }: HttpContextContract) {
     try {

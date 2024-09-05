@@ -43,4 +43,7 @@ export default class AuthController {
         .json({ message: "an error occured", error: err });
     }
   }
+  public async abc(){
+    console.log("odshf")
+  }
 }
